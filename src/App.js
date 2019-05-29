@@ -10,7 +10,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: ['hello', 'there', 'my', 'name', 'is', 'Nicholas'],
+      todos: ['hello', 'there', 'my', 'name', 'is', 'Nicholas'],
       inputText: ''
     }
   }
@@ -18,13 +18,25 @@ class App extends React.Component {
   handleInputChange = e => {
     this.setState({ inputText: e.target.value })
   }
+
+  handleSubmitForm = e => {
+    e.preventDefault()
+    // object -> this.state.inputText
+    // add to todos
+    this.setState( { todos: [...this.state.todos, this.state.inputText] } )
+    this.setState( { inputText: '' })
+  }
   
   render() {
     return (
       <div>
         <h2>Todo List: MVP</h2>
-        <TodoList todo={this.state.text} />
-        <TodoForm onHandleInputChange={this.handleInputChange} inputValue={this.state.inputText} />
+        <TodoList todo={this.state.todos} />
+        <TodoForm 
+          onHandleInputChange={this.handleInputChange} 
+          inputValue={this.state.inputText} 
+          onHandleSubmitForm={this.handleSubmitForm}
+        />
       </div>
     );
   }
