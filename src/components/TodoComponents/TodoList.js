@@ -5,10 +5,10 @@ import React from 'react';
 
 import Todo from './Todo';
 
-const TodoList = () => {
+const TodoList = props => {
     return (
         <ul>
-            <Todo />
+            {props.todo.map(todoItem => <Todo todoText={todoItem} />)}
         </ul>
     );
 }
