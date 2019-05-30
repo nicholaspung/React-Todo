@@ -10,7 +10,11 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: ['hello', 'there', 'my', 'name', 'is', 'Nicholas'],
+      todos: []/* [{
+        task: '',
+        id: Date.now(),
+        completed: false
+      }] */,
       inputText: ''
     }
   }
@@ -21,17 +25,29 @@ class App extends React.Component {
 
   handleSubmitForm = e => {
     e.preventDefault()
-    // object -> this.state.inputText
-    // add to todos
-    this.setState( { todos: [...this.state.todos, this.state.inputText] } )
-    this.setState( { inputText: '' })
+    this.setState({ 
+      todos: [...this.state.todos, { task: this.state.inputText, id: Date.now(), completed: false } ],
+      inputText: ''
+    })
+  }
+
+  handleMakeComplete = id => {
+    // ATTEMPT at mutating state directly, rather than mapping it
+    // this.setState(prevState => {
+    //   const todoIndex = prevState.todos.findIndex(item => item.id === id)
+    //   // console.log(prevState.todos[todoIndex].completed)
+
+    //   return {
+    //     todos: prevState.todos[todoIndex] 
+    //   }
+    // })
   }
   
   render() {
     return (
       <div>
         <h2>Todo List: MVP</h2>
-        <TodoList todo={this.state.todos} />
+        <TodoList todos={this.state.todos} onHandleMakeComplete={this.handleMakeComplete} />
         <TodoForm 
           onHandleInputChange={this.handleInputChange} 
           inputValue={this.state.inputText} 
