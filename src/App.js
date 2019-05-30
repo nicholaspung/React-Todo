@@ -3,6 +3,8 @@ import React from 'react';
 import TodoList from './components/TodoComponents/TodoList';
 import TodoForm from './components/TodoComponents/TodoForm';
 
+import './index.css';
+
 class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
@@ -25,10 +27,13 @@ class App extends React.Component {
 
   handleSubmitForm = e => {
     e.preventDefault()
-    this.setState({ 
-      todos: [...this.state.todos, { task: this.state.inputText, id: Date.now(), completed: false } ],
-      inputText: ''
-    })
+
+    if (this.state.inputText.length > 0) {
+      this.setState({ 
+        todos: [...this.state.todos, { task: this.state.inputText, id: Date.now(), completed: false } ],
+        inputText: ''
+      })
+    }
   }
 
   handleMakeComplete = id => {
@@ -56,17 +61,32 @@ class App extends React.Component {
       }
     })
   }
+
+  handleClearCompleted = e => {
+    e.preventDefault();
+
+    this.setState(prevState => {
+      return {
+        todos: prevState.todos.filter(item => item.completed === false )
+      }
+    })
+  }
   
   render() {
     return (
-      <div>
-        <h2>Todo List: MVP</h2>
-        <TodoList todos={this.state.todos} onHandleMakeComplete={this.handleMakeComplete} />
-        <TodoForm 
-          onHandleInputChange={this.handleInputChange} 
-          inputValue={this.state.inputText} 
-          onHandleSubmitForm={this.handleSubmitForm}
-        />
+      <div className="container">
+        <div>
+          <h2>Todo List: MVP</h2>
+        </div>
+        <div>
+          <TodoList todos={this.state.todos} onHandleMakeComplete={this.handleMakeComplete} />
+          <TodoForm 
+            onHandleInputChange={this.handleInputChange} 
+            inputValue={this.state.inputText} 
+            onHandleSubmitForm={this.handleSubmitForm}
+            onHandleClearCompleted={this.handleClearCompleted}
+          />
+        </div>
       </div>
     );
   }
